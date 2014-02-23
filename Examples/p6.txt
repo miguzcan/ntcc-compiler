@@ -1,0 +1,62 @@
+begin
+
+    %this is a comment, finally works !! 
+    % processes
+    % tell(c)
+    % (p1 || p2 || ... || pn)
+    % when(c) do p
+    % local(fd X,...,fd Z) in p
+    % next(p)
+    % unless(c) do p
+    % **p
+    % !p
+    % skip
+    % abort
+    % {p1 + p2 + ... + pn} %% it look ugly with {}, i had to use them in order to avoid reduction/reduction conflicts
+    % **[5, 7] p %% bounded star process
+    % ![5, 7] p %% bounded rep process
+    % next^4 p %% next process delayed 4 time units
+    % whenever(c) do p
+	
+
+	cs:fd
+
+	timeUnits:3
+
+    fd x
+    fd y
+    fd z
+    fd w
+    fd beta
+    fd gamma
+    fd alpha
+    fd rho
+    fd testVar
+%    xri xrivar
+
+
+    allvars:::0#1000
+    
+
+    def S (fd X1, fd Y1, fd Z1, fd W1) when(X1>0 & Y1>0) do next((tell(X1=1)||tell(Y1=1)||tell(Z1=Z1+1)||tell(W1=W1-1)))
+
+    def DTest (fd TestVar1) next(tell(TestVar1=5))
+    
+    def BoundedRep (fd Beta1) ![5,7] tell(Beta1=1)
+
+    def BoundedStar (fd Gamma1) **[5,8] tell(Gamma1=1)
+
+    def Nextupn (fd Alpha1) next^5 tell(Alpha1=1)
+
+    def WhenEver (fd Alpha2, fd Rho2) whenever(Alpha2>0) do tell(Rho2=1)
+
+    def LocalVar (fd FV) next(local (fd FreshVar2) in next^2 tell(FreshVar2=6))
+
+    def Inic (fd X1,fd Y1, fd Z1, fd W1) (tell(X1=3)||tell(Y1=3)||tell(Z1=3)||tell(W1=3))   
+
+   %def Inic (fd Test, fd Test2) tell(Test=3)
+
+
+    system: {Inic.(x,y,z,w) BoundedRep.(beta) BoundedStar.(gamma) Nextupn.(alpha) LocalVar.(testVar) DTest.(testVar) S.(x, y, z, w)}
+  
+end

@@ -1,0 +1,25 @@
+begin
+
+    %this is a comment, finally works !!
+
+	cs:fd,xri
+	timeUnits:3
+	
+        fd yp::5#100    
+        fd x1::0#10
+        fd x2::1#3
+        xri x3::10.4#20.0
+        xri x4::10.4#20.0
+	fd z::0#5
+        
+
+    	allvars:::0#15
+
+
+    	def W (fd X , fd Y) (tell(Y>3)||tell(X>5+9)||tell(Y<X))
+    	def Proc1 (fd Op) (tell(Op >= 1)||W(Op, x3)) % here, for invocations is avoided the dot
+    	def Proc2 (xri Xr, xri Yr) tell(eq(Xr sqrt(Yr)))
+    	def Proc3 (fd Xs) local (fd Xs) in tell (Xs >= 8)
+
+    	system: {W.(x1, z) Proc1.(x2) Proc2.(x3, x4) Proc3.(yp) tell(x1>6)} % here, for invocation is needed the dot
+end
